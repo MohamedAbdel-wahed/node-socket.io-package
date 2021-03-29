@@ -65,7 +65,8 @@ io.on("connection", (socket) => {
 		socket.join(user.room)
 	})
 
-	socket.on("sendText", async ({ type, text, url, lat, long }) => {
+	socket.on("sendText", async (response) => {
+		console.log(response)
 		const user = getUser(socket.id)
 		const { _doc } = await Message.create({
 			type,
