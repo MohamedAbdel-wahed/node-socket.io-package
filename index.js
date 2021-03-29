@@ -48,7 +48,7 @@ io.on("connection", (socket) => {
 	const room = "default"
 	socket.on("join", (username) => {
 		console.log(`${username} user Joined`)
-		const { user, error } = addUser({ id: socket.id, username,room })
+		const { user, error } = addUser({ id: socket.id, username, room })
 
 		socket.emit("message", {
 			username: "admin",
@@ -65,14 +65,15 @@ io.on("connection", (socket) => {
 		socket.join(user.room)
 	})
 
-	socket.on("sendText", async ({ type, text, url, coords }) => {
+	socket.on("sendText", async ({ type, text, url, lat, long }) => {
 		const user = getUser(socket.id)
 		const { _doc } = await Message.create({
 			type,
 			username: user.username,
 			text,
 			url,
-			coords,
+			lat,
+			long,
 		})
 
 		io.to(user.room).emit("message", {
@@ -88,7 +89,8 @@ io.on("connection", (socket) => {
 			username: user.username,
 			text,
 			url,
-			coords,
+			lat,
+			long
 		})
 
 		io.to(user.room).emit("message", {
@@ -104,7 +106,8 @@ io.on("connection", (socket) => {
 			username: user.username,
 			text,
 			url,
-			coords,
+			lat,
+			long,
 		})
 		io.to(user.room).emit("message", {
 			..._doc,

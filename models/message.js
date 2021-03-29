@@ -1,17 +1,17 @@
-const {model,Schema}= require("mongoose")
+const { model, Schema } = require("mongoose")
 
-const messageSchema= new Schema({
-  type: String,
-  username: String,
-  text: String,
-  url: String, 
-  coords: {
-    lat: Number,
-    long: Number
-  }
-}, {timestamps: true})
+const messageSchema = new Schema(
+	{
+		type: String,
+		username: String,
+		text: String,
+		url: String,
+		lat: Number,
+		long: Number,
+	},
+	{ timestamps: true }
+)
 
-const Message= model("Message", messageSchema)
+const Message = model("Message", messageSchema)
 
-
-module.exports= Message
+module.exports = Message
