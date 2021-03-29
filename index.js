@@ -65,8 +65,7 @@ io.on("connection", (socket) => {
 		socket.join(user.room)
 	})
 
-	socket.on("sendText", async (response) => {
-		console.log(response)
+	socket.on("sendText", async ({ type, text, url, lat,long }) => {
 		const user = getUser(socket.id)
 		const { _doc } = await Message.create({
 			type,
@@ -83,7 +82,7 @@ io.on("connection", (socket) => {
 		})
 	})
 
-	socket.on("sendImg", async ({ type, text, url, coords }) => {
+	socket.on("sendImg", async ({ type, text, url, lat,long }) => {
 		const user = getUser(socket.id)
 		const { _doc } = await Message.create({
 			type,
@@ -100,7 +99,7 @@ io.on("connection", (socket) => {
 		})
 	})
 
-	socket.on("sendLocation", async ({ type, text, url, coords }) => {
+	socket.on("sendLocation", async ({ type, text, url, lat,long }) => {
 		const user = getUser(socket.id)
 		const { _doc } = await Message.create({
 			type,
