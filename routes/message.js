@@ -32,6 +32,7 @@ router.post("/sendimg", (req, res) => {
 	const upload = multer({ storage }).single("file")
 	upload(req, res, (error) => {
 		if (error) {
+			console.log(error)
 			return res.status(500).json({ success: false, error })
 		}
 

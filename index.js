@@ -47,6 +47,7 @@ io.on("connection", (socket) => {
 	console.log("Hello new user")
 
 	socket.on("join", ({ username, room }) => {
+		console.log(`${username} user Joined`)
 		const { user, error } = addUser({ id: socket.id, username, room })
 
 		socket.emit("message", {
