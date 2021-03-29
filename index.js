@@ -45,10 +45,10 @@ app.use("/api/chat", messageRoutes)
 
 io.on("connection", (socket) => {
 	console.log("Hello new user")
-
-	socket.on("join", ({ username, room }) => {
+	const room = "default"
+	socket.on("join", (username) => {
 		console.log(`${username} user Joined`)
-		const { user, error } = addUser({ id: socket.id, username, room })
+		const { user, error } = addUser({ id: socket.id, username,room })
 
 		socket.emit("message", {
 			username: "admin",
@@ -60,7 +60,7 @@ io.on("connection", (socket) => {
 			text: `${username} has joined the chat!`,
 		})
 
-		io.emit("getRoomUsers", getRoomUsers(room))
+		// io.emit("getRoomUsers", getRoomUsers(room))
 
 		socket.join(user.room)
 	})
