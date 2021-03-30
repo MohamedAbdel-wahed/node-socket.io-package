@@ -1,7 +1,7 @@
 const moment = require("moment")
 const cors = require("cors")
 const express = require("express")
-const {connect} = require("mongoose")
+const { connect } = require("mongoose")
 const app = express()
 const server = require("http").Server(app)
 const io = require("socket.io")(server, {
@@ -14,16 +14,16 @@ const messageRoutes = require("./routes/message")
 
 app.use(cors())
 app.use("/uploads", express.static("uploads"))
-app.use(express.json({ extended: true }))
+app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 const mongoUrl = `mongodb+srv://mohamed:test1234@cluster0.vh16z.mongodb.net/ws?retryWrites=true&w=majority`
 
-	connect(mongoUrl, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-		useCreateIndex: true,
-	})
+connect(mongoUrl, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	useCreateIndex: true,
+})
 	.then(() => {
 		console.log("Mongodb Connected Successfully")
 		server.listen(process.env.PORT || 5000, () =>
@@ -38,16 +38,14 @@ app.get("/", (req, res) => {
 
 app.post("/api/chat", messageRoutes)
 
-const { addUser, removeUser, getUser } = require("./users")
+const { addUser, getUser } = require("./users")
 const Message = require("./models/message")
 
 app.use("/api/chat", messageRoutes)
 
 io.on("connection", (socket) => {
-	console.log("Hello new user")
 	const room = "default"
 	socket.on("join", (username) => {
-		console.log(`${username} user Joined`)
 		const { user, error } = addUser({ id: socket.id, username, room })
 
 		socket.emit("message", {
@@ -59,8 +57,6 @@ io.on("connection", (socket) => {
 			username: "admin",
 			text: `${username} has joined the chat!`,
 		})
-
-		// io.emit("getRoomUsers", getRoomUsers(room))
 
 		socket.join(user.room)
 	})
@@ -109,18 +105,10 @@ io.on("connection", (socket) => {
 			lat,
 			long,
 		})
+
 		io.to(user.room).emit("message", {
 			..._doc,
 			createdAt: moment(_doc.createdAt).fromNow(),
 		})
-	})
-
-	socket.on("disconnect", (socket) => {
-		console.log("user disconnected")
-		// const user = removeUser(socket.id)
-		// io.to(user.room).emit("message", {
-		// 	user: "admin",
-		// 	text: `${user.username} has left the chat!`,
-		// })
 	})
 })

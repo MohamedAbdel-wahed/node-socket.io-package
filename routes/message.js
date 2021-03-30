@@ -19,7 +19,7 @@ router.get("/messages", async (req, res) => {
 })
 
 
-router.post("/sendimg", (req, res) => {
+router.post("/sendimg", async(req, res) => {
 	const storage = multer.diskStorage({
 		destination: function (req, file, cb) {
 			cb(null, "uploads/")
