@@ -1,7 +1,7 @@
 const moment = require("moment")
 const cors = require("cors")
 const express = require("express")
-const mongoose = require("mongoose")
+const {connect} = require("mongoose")
 const app = express()
 const server = require("http").Server(app)
 const io = require("socket.io")(server, {
@@ -18,8 +18,8 @@ app.use(express.json({ extended: true }))
 app.use(express.urlencoded({ extended: true }))
 
 const mongoUrl = `mongodb+srv://mohamed:test1234@cluster0.vh16z.mongodb.net/ws?retryWrites=true&w=majority`
-mongoose
-	.connect(mongoUrl, {
+
+	connect(mongoUrl, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		useCreateIndex: true,
@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
 
 app.post("/api/chat", messageRoutes)
 
-const { addUser, removeUser, getUser, getRoomUsers } = require("./users")
+const { addUser, removeUser, getUser } = require("./users")
 const Message = require("./models/message")
 
 app.use("/api/chat", messageRoutes)
@@ -116,10 +116,11 @@ io.on("connection", (socket) => {
 	})
 
 	socket.on("disconnect", (socket) => {
-		const user = removeUser(socket.id)
-		io.to(user.room).emit("message", {
-			user: "admin",
-			text: `${user.username} has left the chat!`,
-		})
+		console.log("user disconnected")
+		// const user = removeUser(socket.id)
+		// io.to(user.room).emit("message", {
+		// 	user: "admin",
+		// 	text: `${user.username} has left the chat!`,
+		// })
 	})
 })
