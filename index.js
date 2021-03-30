@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
 		socket.join(user.room)
 	})
 
-	socket.on("sendText", async ({ type, text, url, lat,long }) => {
+	socket.on("sendText", async ({ type, text, url, lat, long }) => {
 		const user = getUser(socket.id)
 		const { _doc } = await Message.create({
 			type,
@@ -82,7 +82,7 @@ io.on("connection", (socket) => {
 		})
 	})
 
-	socket.on("sendImg", async ({ type, text, url, lat,long }) => {
+	socket.on("sendImg", async ({ type, text, url, lat, long }) => {
 		const user = getUser(socket.id)
 		const { _doc } = await Message.create({
 			type,
@@ -90,7 +90,7 @@ io.on("connection", (socket) => {
 			text,
 			url,
 			lat,
-			long
+			long,
 		})
 
 		io.to(user.room).emit("message", {
@@ -99,7 +99,7 @@ io.on("connection", (socket) => {
 		})
 	})
 
-	socket.on("sendLocation", async ({ type, text, url, lat,long }) => {
+	socket.on("sendLocation", async ({ type, text, url, lat, long }) => {
 		const user = getUser(socket.id)
 		const { _doc } = await Message.create({
 			type,
@@ -116,14 +116,10 @@ io.on("connection", (socket) => {
 	})
 
 	socket.on("disconnect", (socket) => {
-		// console.log(socket)
-		// const user = getUser(socket.id)
-		// socket.broadcast
-		// 	.to(user.room)
-		// 	.emit("message", {
-		// 		user: "admin",
-		// 		text: `${username} has left the chat!`,
-		// 	})
-		// removeUser(socket.id)
+		const user = removeUser(socket.id)
+		io.to(user.room).emit("message", {
+			user: "admin",
+			text: `${user.username} has left the chat!`,
+		})
 	})
 })
