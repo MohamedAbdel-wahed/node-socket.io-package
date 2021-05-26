@@ -1,6 +1,6 @@
 let roomUsers= []
 
-const addUser = ({ id,userId,username, room }) => {
+const addUser = ({ id,username, room }) => {
 	const userExists = roomUsers.find(
 		(user) => user.id === userId && user.village_id === room
 	)
