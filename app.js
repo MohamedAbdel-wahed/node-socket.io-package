@@ -15,7 +15,6 @@ const messageRoutes = require("./routes/message")
 const { addUser, getUser } = require("./users")
 const Message = require("./models/message")
 const Location = require("./models/location")
-const { isRegExp } = require("util")
 
 
 app.use(cors())
