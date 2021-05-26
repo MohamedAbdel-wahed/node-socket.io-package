@@ -54,8 +54,8 @@ const main = async () => {
 	console.log(users);
 	io.on("connection", (socket) => {
 		socket.on("join", ({ userId, room }) => {
-			const db_user = users.find(user=> user.id===userId)
-			if(!db_user) return { error: "username doesn't exists" }
+			const db_user = users.find(user=> user.id===userId && user.vilage_id===room)
+			if(!db_user) return { error: "unauthorized to enter this room" }
 			const { user, error } = addUser({ id: socket.id,username: db_user.username, room })
 	
 			socket.emit("message", {
