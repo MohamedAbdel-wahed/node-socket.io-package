@@ -65,7 +65,7 @@ const main = async () => {
 	
 			socket.broadcast.to(user.room).emit("message", {
 				username: "admin",
-				text: `${username} has joined the chat!`,
+				text: `${user.username} has joined the chat!`,
 			})
 	
 			socket.join(user.room)
