@@ -73,6 +73,7 @@ const main = async () => {
 	
 		socket.on("sendText", async ({ userId,username,type, text, url, lat, long }) => {
 			const user = getUser(socket.id)
+			console.log(user);
 			const { _doc } = await Message.create({
 				type,
 				userId,
