@@ -71,12 +71,12 @@ const main = async () => {
 			socket.join(user.room)
 		})
 	
-		socket.on("sendText", async ({ type, text, url, lat, long }) => {
+		socket.on("sendText", async ({ userId,username,type, text, url, lat, long }) => {
 			const user = getUser(socket.id)
 			const { _doc } = await Message.create({
 				type,
-				userId: user,
-				username: user.username,
+				userId,
+				username,
 				text,
 				url,
 				lat,
@@ -89,12 +89,12 @@ const main = async () => {
 			})
 		})
 	
-		socket.on("sendImg", async ({ type, text, url, lat, long }) => {
+		socket.on("sendImg", async ({ userId,username, type, text, url, lat, long }) => {
 			const user = getUser(socket.id)
 			const { _doc } = await Message.create({
 				type,
-				userId: user.id,
-				username: user.username,
+				userId,
+				username,
 				text,
 				url,
 				lat,
@@ -107,11 +107,12 @@ const main = async () => {
 			})
 		})
 	
-		socket.on("sendLocation", async ({ type, text, url, lat, long }) => {
+		socket.on("sendLocation", async ({userId,username, type, text, url, lat, long }) => {
 			const user = getUser(socket.id)
 			const { _doc } = await Message.create({
 				type,
-				username: user.username,
+				userId,
+				username,
 				text,
 				url,
 				lat,
