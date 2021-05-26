@@ -47,7 +47,10 @@ app.post("/api/chat", messageRoutes)
 
 
 app.use("/api/chat", messageRoutes)
-const users = fetchApi("https://chat.pina-app:5000/api/users").then(res => res.json()).then(res => res?.data)
+const users = fetchApi("https://pina-app.com/api/users")
+			.then(res => res.json())
+			.then(res => res?.data)
+			.catch(err => console.log(err))
 
 io.on("connection", (socket) => {
 	socket.on("join", ({ userId, room }) => {
