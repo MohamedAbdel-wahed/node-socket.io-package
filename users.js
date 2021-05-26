@@ -10,8 +10,6 @@ const addUser = ({ id,username, room }) => {
 	const user = { id, username, room }
 	roomUsers.push(user)
 
-	console.log(roomUsers)
-
 	return { user }
 }
 
