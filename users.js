@@ -2,7 +2,7 @@ let roomUsers= []
 
 const addUser = ({ id,username, room }) => {
 	const userExists = roomUsers.find(
-		(user) => user.id === userId && user.village_id === room
+		(user) => user.id === id && user.room === room
 	)
 
 	if (userExists) return { error: "username already exists" }
