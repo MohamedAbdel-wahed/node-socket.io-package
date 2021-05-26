@@ -54,9 +54,9 @@ const users = fetchApi("https://pina-app.com/api/users")
 
 io.on("connection", (socket) => {
 	socket.on("join", ({ userId, room }) => {
-		const db_exists = users.find(user=> user.id===userId)
-		if(!db_exists) return { error: "username doesn't exists" }
-		const { user, error } = addUser({ id: socket.id, userId, room })
+		const db_user = users.find(user=> user.id===userId)
+		if(!db_user) return { error: "username doesn't exists" }
+		const { user, error } = addUser({ id: socket.id,username: db_user.username  userId, room })
 
 		socket.emit("message", {
 			username: "admin",

@@ -1,13 +1,13 @@
 let roomUsers= []
 
-const addUser = ({ id,userId, room }) => {
+const addUser = ({ id,userId,username, room }) => {
 	const userExists = roomUsers.find(
 		(user) => user.id === userId && user.village_id === room
 	)
 
 	if (userExists) return { error: "username already exists" }
 
-	const user = { id, username: user.username, room }
+	const user = { id, username, room }
 	roomUsers.push(user)
 
 	return { user }
