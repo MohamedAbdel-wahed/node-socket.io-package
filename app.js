@@ -48,6 +48,7 @@ const main = async () => {
 	
 	io.on("connection", (socket) => {
 		socket.on("join", ({ userId, room }) => {
+			console.log("Just Joined!")
 			const db_user = users.find(user => user.village_id===parseInt(room))
 			if (!db_user) return { error: "unauthorized to enter this room" }
 			const { user, error } = addUser({ id: socket.id, username: db_user.username, room: db_user.village_id })
