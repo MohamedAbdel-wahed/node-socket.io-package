@@ -1,4 +1,5 @@
-let roomUsers= []
+let roomUsers = []
+
 
 const addUser = ({ id,username, room }) => {
 	const userExists = roomUsers.find(
@@ -9,6 +10,8 @@ const addUser = ({ id,username, room }) => {
 
 	const user = { id, username, room }
 	roomUsers.push(user)
+
+	console.log(roomUsers)
 
 	return { user }
 }

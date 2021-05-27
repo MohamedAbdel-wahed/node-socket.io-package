@@ -37,14 +37,7 @@ const mongoUrl = `mongodb+srv://mohamed:test1234@cluster0.vh16z.mongodb.net/ws?r
 	})
 	.catch((err) => console.log(err))
 
-app.get("/", (req, res) => {
-	res.send("Hello World")
-})
-
-
 app.post("/api/chat", messageRoutes)
-
-
 app.use("/api/chat", messageRoutes)
 
 const main = async () => {
@@ -52,12 +45,12 @@ const main = async () => {
 	const result= await response.json()
 	const users = await result.data
 	console.log(users);
+	
 	io.on("connection", (socket) => {
 		socket.on("join", ({ userId, room }) => {
-			const db_user = users.find(user=> user.id===userId && user.vilage_id===room)
-			if(!db_user) return { error: "unauthorized to enter this room" }
-			const { user, error } = addUser({ id: socket.id,username: db_user.username, room })
-	
+			const db_user = users.find(user => user.village_id===parseInt(room))
+			if (!db_user) return { error: "unauthorized to enter this room" }
+			const { user, error } = addUser({ id: socket.id, username: db_user.username, room: db_user.village_id })
 			socket.emit("message", {
 				username: "admin",
 				text: `Hi ${user.username}, Welcome to the chat!`,
@@ -73,7 +66,9 @@ const main = async () => {
 	
 		socket.on("sendText", async ({ userId,username,type, text, url, lat, long }) => {
 			const user = getUser(socket.id)
-			console.log(socket.io);
+			if(!user) return {message: "not auithroized to enter this room"}
+			console.log("GET USER")
+			console.log(user)
 			const { _doc } = await Message.create({
 				type,
 				userId,
@@ -81,8 +76,9 @@ const main = async () => {
 				text,
 				url,
 				lat,
-				long,
+				long
 			})
+
 	
 			io.to(user.room).emit("message", {
 				..._doc,
