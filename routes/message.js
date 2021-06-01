@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get("/messages", async (req, res) => {
 	try {
-		let messages = await Message.find()
+		let messages = await Message.where('room').equals(req.body.village_id)
 		messages = messages.map((msg) => ({
 			...msg._doc,
 			createdAt: moment(msg.createdAt).fromNow(),

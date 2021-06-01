@@ -41,7 +41,7 @@ app.post("/api/chat", messageRoutes)
 app.use("/api/chat", messageRoutes)
 
 app.post("/api/add-message", (req, res) => {
-	return req.body;
+	
 });
 
 const main = async () => {
@@ -77,6 +77,7 @@ const main = async () => {
 			const { _doc } = await Message.create({
 				type,
 				userId,
+				room,
 				username,
 				text,
 				url,
