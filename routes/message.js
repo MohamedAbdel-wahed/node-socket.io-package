@@ -4,7 +4,7 @@ const moment = require("moment")
 const Message = require("../models/message")
 const router = express.Router()
 
-router.get("/messages", async (req, res) => {
+router.post("/messages", async (req, res) => {
 	try {
 		let messages = await Message.where('room').equals(req.body.village_id)
 		messages = messages.map((msg) => ({

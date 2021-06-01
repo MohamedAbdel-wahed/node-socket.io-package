@@ -40,9 +40,11 @@ const mongoUrl = `mongodb+srv://mohamed:test1234@cluster0.vh16z.mongodb.net/ws?r
 app.post("/api/chat", messageRoutes)
 app.use("/api/chat", messageRoutes)
 
-app.post("/api/add-message", (req, res) => {
-	
-});
+// const getMessage=()=> {
+// 	app.get("/api/chat/new-message").then(()=> res.json({message: "jhelloprejforhfro"}));
+// }
+
+// getMessage();
 
 const main = async () => {
 	const response= await fetchApi("https://pina-app.com/api/users")
