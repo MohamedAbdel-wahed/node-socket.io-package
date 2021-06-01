@@ -77,7 +77,7 @@ const main = async () => {
 			const { _doc } = await Message.create({
 				type,
 				userId,
-				room,
+				room: user.room,
 				username,
 				text,
 				url,
