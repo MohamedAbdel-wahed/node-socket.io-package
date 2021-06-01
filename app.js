@@ -40,6 +40,10 @@ const mongoUrl = `mongodb+srv://mohamed:test1234@cluster0.vh16z.mongodb.net/ws?r
 app.post("/api/chat", messageRoutes)
 app.use("/api/chat", messageRoutes)
 
+app.post("/api/add-message", (req, res) => {
+	return req.body;
+});
+
 const main = async () => {
 	const response= await fetchApi("https://pina-app.com/api/users")
 	const result= await response.json()
@@ -65,7 +69,7 @@ const main = async () => {
 			socket.join(user.room)
 		})
 	
-		socket.on("sendText", async ({ userId,username,type, text, url, lat, long }) => {
+		socket.on("chat:send", async ({ userId,username,type, text, url, lat, long }) => {
 			const user = getUser(socket.id)
 			if(!user) return {message: "not auithroized to enter this room"}
 			console.log("GET USER")
@@ -79,46 +83,28 @@ const main = async () => {
 				lat,
 				long
 			})
+	
+			io.to(user.room).emit("chat:message", {
+				..._doc,
+				createdAt: moment(_doc.createdAt).fromNow(),
+			})
+		})
 
-	
-			io.to(user.room).emit("message", {
-				..._doc,
-				createdAt: moment(_doc.createdAt).fromNow(),
-			})
-		})
-	
-		socket.on("sendImg", async ({ userId,username, type, text, url, lat, long }) => {
-			const user = getUser(socket.id)
-			const { _doc } = await Message.create({
-				type,
-				userId,
-				username,
-				text,
-				url,
-				lat,
-				long,
-			})
-	
-			io.to(user.room).emit("message", {
-				..._doc,
-				createdAt: moment(_doc.createdAt).fromNow(),
-			})
-		})
-	
-		socket.on("sendLocation", async ({userId,username, type, text, url, lat, long }) => {
-			const user = getUser(socket.id)
-			const { _doc } = await Message.create({
-				type,
-				userId,
-				username,
-				text,
-				url,
-				lat,
-				long,
-			})
-	
-			io.to(user.room).emit("message", {
-				..._doc,
+		socket.on("currentLocation", async ({ userId, lat, long }) => {
+			let location = null;
+			location = await Location.find({ userId })
+			if (location) {
+				location.lat = lat;
+				location.long = long;
+			}
+			else {
+				location= await Location.create({userId, lat, long})
+			}
+
+			location.save();
+
+			io.emit("upadatedLocation", {
+				...location._doc,
 				createdAt: moment(_doc.createdAt).fromNow(),
 			})
 		})
@@ -128,23 +114,3 @@ const main = async () => {
 }
 
 main()
-
-// socket.on("currentLocation", async ({ userId, lat, long }) => {
-// 		let location = null;
-// 		const user = getUser(socket.id)
-// 		 location = await Location.find({ userId })
-// 		if (location) {
-// 			location.lat = lat;
-// 			location.long = long;
-// 		}
-// 		else {
-// 			 location= await Location.create({userId, lat, long})
-// 		}
-
-// 		location.save();
-
-// 		io.emit("upadatedLocation", {
-// 			...location._doc,
-// 			createdAt: moment(_doc.createdAt).fromNow(),
-// 		})
-// 	})
