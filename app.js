@@ -53,8 +53,9 @@ const main = async () => {
 	console.log(users);
 	
 	io.on("connection", (socket) => {
+			console.log(`new user connected!`)
 		socket.on("join", ({ userId, room }) => {
-			console.log(`${userId } Just Joined!`)
+			console.log(`new user just joined!`)
 			const db_user = users.find(user => user.village_id===parseInt(room))
 			if (!db_user) return { error: "unauthorized to enter this room" }
 			const { user, error } = addUser({ id: socket.id, username: db_user.username, room: db_user.village_id })
@@ -72,9 +73,9 @@ const main = async () => {
 		})
 	
 		socket.on("chat:send", async ({ userId,username,type, text, url, lat, long }) => {
+			console.log("new message sent")
 			const user = getUser(socket.id)
 			if(!user) return {message: "not auithroized to enter this room"}
-			console.log("GET USER")
 			console.log(user)
 			const { _doc } = await Message.create({
 				type,
