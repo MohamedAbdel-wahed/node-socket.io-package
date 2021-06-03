@@ -50,13 +50,12 @@ const main = async () => {
 	const response= await fetchApi("https://pina-app.com/api/users")
 	const result= await response.json()
 	const users = await result.data
-	console.log(users);
 	
 	io.on("connection", (socket) => {
-			console.log(`new user connected!`)
+		console.log(`new user connected!`)
 		socket.on("join", ({ userId, room }) => {
-			console.log(`new user just joined!`)
-			const db_user = users.find(user => user.village_id===parseInt(room))
+			const db_user = users.find(user => user.id===userId && user.village_id===parseInt(room))
+			console.log(`${db_user.username} just joined room ${room}!`)
 			if (!db_user) return { error: "unauthorized to enter this room" }
 			const { user, error } = addUser({ id: socket.id, username: db_user.username, room: db_user.village_id })
 			socket.emit("message", {
@@ -72,20 +71,14 @@ const main = async () => {
 			socket.join(user.room)
 		})
 	
-		socket.on("chat:send", async ({ userId,username,type, text, url, lat, long }) => {
+		socket.on("chat:send", async (data) => {
 			console.log("new message sent")
 			const user = getUser(socket.id)
 			if(!user) return {message: "not auithroized to enter this room"}
 			console.log(user)
 			const { _doc } = await Message.create({
-				type,
-				userId,
-				room: user.room,
-				username,
-				text,
-				url,
-				lat,
-				long
+				...data,
+				room: user.room
 			})
 	
 			io.to(user.room).emit("chat:message", {
@@ -94,7 +87,17 @@ const main = async () => {
 			})
 		})
 
-		socket.on("currentLocation", async ({ userId, lat, long }) => {
+	
+		
+	})
+	
+}
+
+main()
+
+
+/*
+	socket.on("currentLocation", async ({ userId, lat, long }) => {
 			let location = null;
 			location = await Location.find({ userId })
 			if (location) {
@@ -112,9 +115,5 @@ const main = async () => {
 				createdAt: moment(_doc.createdAt).fromNow(),
 			})
 		})
-		
-	})
-	
-}
 
-main()
+	*/

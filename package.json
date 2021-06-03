@@ -1,9 +1,6 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "engines": {
-    "node": "12.x"
-  },
   "description": "welcome",
   "main": "app.js",
   "dependencies": {
