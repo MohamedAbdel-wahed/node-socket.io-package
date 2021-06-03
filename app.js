@@ -47,14 +47,13 @@ app.use("/api/chat", messageRoutes)
 // getMessage();
 
 const main = async () => {
-	const response= await fetchApi("https://pina-app.com/api/chat/users")
+	const response= await fetchApi("https://pina-app.com/api/users")
 	const result= await response.json()
 	const users = await result.data
 	console.log(users);
 	
 	io.on("connection", (socket) => {
-		console.log(`new user connected!`)
-		io.emit('printDataInConsole','Client first connected');
+			console.log(`new user connected!`)
 		socket.on("join", ({ userId, room }) => {
 			console.log(`new user just joined!`)
 			const db_user = users.find(user => user.village_id===parseInt(room))
@@ -95,24 +94,24 @@ const main = async () => {
 			})
 		})
 
-		// socket.on("currentLocation", async ({ userId, lat, long }) => {
-		// 	let location = null;
-		// 	location = await Location.find({ userId })
-		// 	if (location) {
-		// 		location.lat = lat;
-		// 		location.long = long;
-		// 	}
-		// 	else {
-		// 		location= await Location.create({userId, lat, long})
-		// 	}
+		socket.on("currentLocation", async ({ userId, lat, long }) => {
+			let location = null;
+			location = await Location.find({ userId })
+			if (location) {
+				location.lat = lat;
+				location.long = long;
+			}
+			else {
+				location= await Location.create({userId, lat, long})
+			}
 
-		// 	location.save();
+			location.save();
 
-		// 	io.emit("upadatedLocation", {
-		// 		...location._doc,
-		// 		createdAt: moment(_doc.createdAt).fromNow(),
-		// 	})
-		// })
+			io.emit("upadatedLocation", {
+				...location._doc,
+				createdAt: moment(_doc.createdAt).fromNow(),
+			})
+		})
 		
 	})
 	
