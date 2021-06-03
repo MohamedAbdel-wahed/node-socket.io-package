@@ -5,9 +5,7 @@ const { connect } = require("mongoose")
 const app = express()
 const server = require("http").Server(app)
 const io = require("socket.io")(server, {
-	cors: {
-		origin: "*",
-	},
+	cors: "*"
 })
 const fetchApi = require("node-fetch")
 
@@ -50,16 +48,24 @@ const main = async () => {
 	const response= await fetchApi("https://pina-app.com/api/chat/users")
 	const result= await response.json()
 	const users = await result.data
-	console.log(users);
+
+	console.log(users)
 	
 	io.on("connection", (socket) => {
 			console.log(`new user connected!`)
 		socket.on("join", ({ userId, room }) => {
+			console.log("start db")
+			const db_user = users.find(user => user.id===userId && user.village_id === parseInt(room))
+			console.log(db_user)
+			if (!db_user) {
+				io.emit("unjoin", { status: 401 })
+				return;
+			}
+
 			console.log(`new user just joined!`)
-			const db_user = users.find(user => user.village_id===parseInt(room))
-			if (!db_user) return { error: "unauthorized to enter this room" }
+
 			const { user, error } = addUser({ id: socket.id, username: db_user.username, room: db_user.village_id })
-			socket.emit("message", {
+			socket.emit("chat:message", {
 				username: "admin",
 				text: `Hi ${user.username}, Welcome to the chat!`,
 			})
@@ -76,7 +82,6 @@ const main = async () => {
 			console.log("new message sent")
 			const user = getUser(socket.id)
 			if(!user) return {message: "not auithroized to enter this room"}
-			console.log(user)
 			const { _doc } = await Message.create({
 				type,
 				userId,
