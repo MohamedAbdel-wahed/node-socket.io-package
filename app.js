@@ -47,7 +47,7 @@ app.use("/api/chat", messageRoutes)
 // getMessage();
 
 const main = async () => {
-	const response= await fetchApi("https://pina-app.com/api/users")
+	const response= await fetchApi("https://pina-app.com/api/chat/users")
 	const result= await response.json()
 	const users = await result.data
 	console.log(users);
