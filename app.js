@@ -83,7 +83,10 @@ const main = async () => {
 			const user = getUser(socket.id)
 			if (!user) return { message: "not auithroized to enter this room" }
 			
-			const response= await fetchApi.post("http://localhost:8000/api/chat/add-message", { userId, username, type, text, url, lat, long })
+			const response = await fetchApi("http://localhost:8000/api/chat/add-message",{
+					method: 'POST',
+					body: { userId, username, type, text, url, lat, long }
+				})
 			const result = response.json()
 			console.log("############SOCKET######################")
 			console.log(result)
