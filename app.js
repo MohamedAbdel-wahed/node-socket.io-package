@@ -8,7 +8,7 @@ const io = require("socket.io")(server, {
 	cors: "*"
 })
 const fetchApi = require("node-fetch")
-const axios =reqiuire("axios")
+const axios =require("axios")
 
 const messageRoutes = require("./routes/message")
 const { addUser, getUser } = require("./users")
