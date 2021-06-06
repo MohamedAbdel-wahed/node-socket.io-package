@@ -49,7 +49,13 @@ const main = async () => {
 	const result= await response.json()
 	const users = await result.data
 
-	console.log(users)
+	// console.log(users)
+
+	fetchApi('https://jsonplaceholder.typicode.com/todos')
+  	.then(response => response.json())
+	.then(json => console.log(json))
+	
+	
 	
 	io.on("connection", (socket) => {
 			console.log(`new user connected!`)
@@ -86,10 +92,11 @@ const main = async () => {
 			console.log("############SOCKET BEFORE REQUEST ######################")
 
 		 fetchApi("http://localhost:8000/api/chat/add-message",{
-					method: 'POST',
-					body: { userId, username, type, text, url, lat, long }
-			}).then(res => res.json())
-			.then(result=> console.log(result))
+				method: "POST",
+				body: { userId,username,type, text, url, lat, long }
+		 }).then(res => res.json())
+			.then(result => console.log(result))
+			.catch(err=> console.log(err))
 		
 			console.log("############SOCKET AFTER REQUEST ######################")
 			
