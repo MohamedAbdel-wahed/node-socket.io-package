@@ -8,6 +8,7 @@ const io = require("socket.io")(server, {
 	cors: "*"
 })
 const fetchApi = require("node-fetch")
+const axios =reqiuire("axios")
 
 const messageRoutes = require("./routes/message")
 const { addUser, getUser } = require("./users")
@@ -51,12 +52,6 @@ const main = async () => {
 
 	// console.log(users)
 
-	fetchApi('https://jsonplaceholder.typicode.com/todos')
-  	.then(response => response.json())
-	.then(json => console.log(json))
-	
-	
-	
 	io.on("connection", (socket) => {
 			console.log(`new user connected!`)
 		socket.on("join", ({ userId, room }) => {
@@ -91,11 +86,12 @@ const main = async () => {
 			
 			console.log("############SOCKET BEFORE REQUEST ######################")
 
-		 fetchApi("http://localhost:8000/api/chat/add-message",{
-				method: "POST",
-				body: { userId,username,type, text, url, lat, long }
-		 }).then(res => res.json())
-			.then(result => console.log(result))
+			axios({
+			url: 'http://localhost:8000/api/chat/add-message',
+			method: 'post',
+			data: {	userId, username, type, text, url, lat, long }
+			})
+			.then(res => console.log(res))
 			.catch(err=> console.log(err))
 		
 			console.log("############SOCKET AFTER REQUEST ######################")
