@@ -39,11 +39,13 @@ const mongoUrl = `mongodb+srv://mohamed:test1234@cluster0.vh16z.mongodb.net/ws?r
 app.post("/api/chat", messageRoutes)
 app.use("/api/chat", messageRoutes)
 
-// const getMessage=()=> {
-// 	app.get("/api/chat/new-message").then(()=> res.json({message: "jhelloprejforhfro"}));
-// }
-
-// getMessage();
+axios({
+  url: 'http://127.0.0.1:8000/api/chat/add-message',
+  method: 'post',
+  data: { username: "Jone Doe" }
+})
+ .then(res => console.log(res.data))
+ .catch(err=> console.log(err))
 
 const main = async () => {
 	const response= await fetchApi("https://pina-app.com/api/chat/users")
@@ -87,12 +89,12 @@ const main = async () => {
 			console.log("############SOCKET BEFORE REQUEST ######################")
 
 			axios({
-			url: 'http://localhost:8000/api/chat/add-message',
-			method: 'post',
-			data: {	userId, username, type, text, url, lat, long }
-			})
-			.then(res => console.log(res))
-			.catch(err=> console.log(err))
+				url: 'http://127.0.0.1:8000/api/chat/add-message',
+				method: 'post',
+				data: { username: "Jone Doe" }
+				})
+				.then(res => console.log(res.data))
+				.catch(err=> console.log(err))
 		
 			console.log("############SOCKET AFTER REQUEST ######################")
 			
