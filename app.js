@@ -77,7 +77,7 @@ const main = async () => {
 			const user = getUser(socket.id)
 			if (!user) return { message: "not authroized to enter this room" }
 
-			axios({
+			fetchApi({
 				url: 'https://pina-app.com/api/chat/add-message',
 				method: 'get',
 				data
@@ -86,7 +86,9 @@ const main = async () => {
 				console.log(res?.data || res)
 				console.log("new message sent")
 			})
-			.catch(err => console.log(err))
+				.catch(err => console.log(err))
+			
+			console.log("after request")
 		
 			// const { _doc } = await Message.create(data)
 	
