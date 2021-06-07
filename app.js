@@ -45,7 +45,7 @@ const main = async () => {
 
 	// console.log(users)
 
-	axios.post('http://localhost:8000/api/chat/add-message', {username: "John Doe"})
+	axios.post('https://pina-app.com/api/chat/add-message', {username: "John Doe"})
 		.then(res => {
 			console.log(res?.data || res)
 			console.log("new message sent")
