@@ -40,10 +40,17 @@ app.post("/api/chat", messageRoutes)
 app.use("/api/chat", messageRoutes)
 
 const main = async () => {
-	const response= await axios("https://pina-app.com/api/chat/users")
+	const response= await axios.get("https://pina-app.com/api/chat/users")
 	const users = await response.data.data
 
 	// console.log(users)
+
+	axios.post('http://localhost:8000/api/chat/add-message', {username: "John Doe"})
+		.then(res => {
+			console.log(res?.data || res)
+			console.log("new message sent")
+		})
+		.catch(err => console.log(err))
 
 	io.on("connection", (socket) => {
 			console.log(`new user connected!`)
@@ -77,15 +84,11 @@ const main = async () => {
 			const user = getUser(socket.id)
 			if (!user) return { message: "not authroized to enter this room" }
 
-			fetchApi({
-				url: 'https://pina-app.com/api/chat/add-message',
-				method: 'get',
-				data
-			})
-			.then(res => {
-				console.log(res?.data || res)
-				console.log("new message sent")
-			})
+			axios.post('https://pina-app.com/api/chat/add-message', data)
+				.then(res => {
+					console.log(res?.data || res)
+					console.log("new message sent")
+				})
 				.catch(err => console.log(err))
 			
 			console.log("after request")
