@@ -39,14 +39,6 @@ const mongoUrl = `mongodb+srv://mohamed:test1234@cluster0.vh16z.mongodb.net/ws?r
 app.post("/api/chat", messageRoutes)
 app.use("/api/chat", messageRoutes)
 
-axios({
-  url: 'https://pina-app.com/api/chat/add-message',
-  method: 'get',
-  data: { username: "Jone Doe" }
-})
- .then(res => console.log(res.data))
- .catch(err=> console.log(err))
-
 const main = async () => {
 	const response= await fetchApi("https://pina-app.com/api/chat/users")
 	const result= await response.json()
@@ -86,19 +78,14 @@ const main = async () => {
 			const user = getUser(socket.id)
 			if (!user) return { message: "not auithroized to enter this room" }
 			
-			console.log("############SOCKET BEFORE REQUEST ######################")
-
 			axios({
 				url: 'https://pina-app.com/api/chat/add-message',
-				method: 'post',
-				data: { username: "Jone Doe" }
+				method: 'get',
+				data: { userId,username,type, text, url, lat, long }
 				})
 				.then(res => console.log(res.data))
 				.catch(err=> console.log(err))
 		
-			console.log("############SOCKET AFTER REQUEST ######################")
-			
-
 			const { _doc } = await Message.create({
 				type,
 				userId,
