@@ -109,7 +109,7 @@ const main = async () => {
 				location.long = long;
 			}
 			else {
-				location= await Location.create({userId, lat, long})
+				= await Location.create({userId, lat, long})
 			}
 
 			location.save();
@@ -120,7 +120,7 @@ const main = async () => {
 			})
 		})
 		
-	})
+	})location
 	
 }
 
