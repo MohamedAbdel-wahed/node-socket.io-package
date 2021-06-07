@@ -67,35 +67,26 @@ const main = async () => {
 	
 			socket.broadcast.to(user.room).emit("message", {
 				username: "admin",
-				text: `${user.username} has joined the chat!`,
+				text: `${user.username} has joined the chat!`
 			})
 
 			socket.join(user.room)
 		})
 	
-		socket.on("chat:send", async ({ userId,username,type, text, url, lat, long }) => {
+		socket.on("chat:send", async (data) => {
 			console.log("new message sent")
 			const user = getUser(socket.id)
-			if (!user) return { message: "not auithroized to enter this room" }
-			
+			if (!user) return { message: "not authroized to enter this room" }
+
 			axios({
 				url: 'https://pina-app.com/api/chat/add-message',
 				method: 'get',
-				data: { userId,username,type, text, url, lat, long }
+				data
 				})
 				.then(res => console.log(res.data))
 				.catch(err=> console.log(err))
 		
-			const { _doc } = await Message.create({
-				type,
-				userId,
-				room: user.room,
-				username,
-				text,
-				url,
-				lat,
-				long
-			})
+			const { _doc } = await Message.create(data)
 	
 			io.to(user.room).emit("chat:message", {
 				..._doc,
