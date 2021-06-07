@@ -41,7 +41,7 @@ app.use("/api/chat", messageRoutes)
 
 axios({
   url: 'https://pina-app.com/api/chat/add-message',
-  method: 'post',
+  method: 'get',
   data: { username: "Jone Doe" }
 })
  .then(res => console.log(res.data))
