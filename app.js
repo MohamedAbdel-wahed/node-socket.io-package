@@ -89,7 +89,7 @@ const main = async () => {
 			console.log("############SOCKET BEFORE REQUEST ######################")
 
 			axios({
-				url: 'http://127.0.0.1:8000/api/chat/add-message',
+				url: 'https://pina-app.com/api/chat/add-message',
 				method: 'post',
 				data: { username: "Jone Doe" }
 				})
