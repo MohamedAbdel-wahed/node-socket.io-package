@@ -40,9 +40,8 @@ app.post("/api/chat", messageRoutes)
 app.use("/api/chat", messageRoutes)
 
 const main = async () => {
-	const response= await fetchApi("https://pina-app.com/api/chat/users")
-	const result= await response.json()
-	const users = await result.data
+	const response= await axios("https://pina-app.com/api/chat/users")
+	const users = await response.data
 
 	// console.log(users)
 
@@ -82,16 +81,16 @@ const main = async () => {
 				url: 'https://pina-app.com/api/chat/add-message',
 				method: 'get',
 				data
-				})
-				.then(res => console.log(res.data))
-				.catch(err=> console.log(err))
-		
-			const { _doc } = await Message.create(data)
-	
-			io.to(user.room).emit("chat:message", {
-				..._doc,
-				createdAt: moment(_doc.createdAt).fromNow(),
 			})
+			.then(res => console.log(res.data))
+			.catch(err=> console.log(err))
+		
+			// const { _doc } = await Message.create(data)
+	
+			// io.to(user.room).emit("chat:message", {
+			// 	..._doc,
+			// 	// createdAt: moment(_doc.createdAt).fromNow(),
+			// })
 		})
 
 		socket.on("currentLocation", async ({ userId, lat, long }) => {
