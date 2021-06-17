@@ -84,7 +84,6 @@ const main = async () => {
           .then((res) => {
             const data = res?.data?.data || null;
             console.log(data);
-            data.created_at = moment(data?.created_at).fromNow() || "";
             io.to(data.village_id).emit("chat:message", data);
           })
           .catch((err) => console.log(err));
