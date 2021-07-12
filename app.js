@@ -26,8 +26,8 @@ const main = async () => {
   const endpoint = "https://pina-app.com";
   // const endpoint = "http://127.0.0.1:8000"
 
-  const response = await axios(`http://localhost:8000/api/chat/users`)
-  const users = await response?.data?.data;
+  const response = await axios(`${endpoint}/api/chat/users`)
+  const users = await response?.data?.data
 
   users.filter(user => user.village_id)
   
