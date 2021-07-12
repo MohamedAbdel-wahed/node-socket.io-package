@@ -84,7 +84,7 @@ const main = async () => {
             .then((res) => {
               const data = res?.data?.data || null;
               console.log(data);
-              io.to(data.village_id).emit("chat:message", data);
+              io.to(data?.village_id).emit("chat:message", data);
             })
             .catch((err) => console.log(err));
         }
