@@ -23,13 +23,14 @@ app.get("/home", (req, res) => {
 });	
 
 const main = async () => {
-  const endpoint = "https://pina-app.com";
-  // const endpoint= "http://127.0.0.1:8000"
+  // const endpoint = "https://pina-app.com";
+  const endpoint= "http://127.0.0.1:8000"
 
   const response = await axios.get(`${endpoint}/api/chat/users`);
-  const users = await response.data.data;
+  const users = await response?.data?.data;
 
-  // console.log(users)
+  console.log(users)
+
 
   io.on("connection", (socket) => {
     console.log(`new user connected!`);
