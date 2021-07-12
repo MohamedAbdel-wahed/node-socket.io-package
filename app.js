@@ -52,15 +52,15 @@ const main = async () => {
         });
         socket.emit("chat:message", {
           username: "admin",
-          text: `Hi ${user.username}, Welcome to the chat!`,
+          text: `Hi ${user?.username}, Welcome to the chat!`,
         });
 
         socket.broadcast.to(user.room).emit("message", {
           username: "admin",
-          text: `${user.username} has joined the chat!`,
+          text: `${user?.username} has joined the chat!`,
         });
 
-        socket.join(user.room);
+        socket.join(user?.room);
       });
 
       socket.on(
@@ -91,7 +91,8 @@ const main = async () => {
       );
 
       socket.on("currentLocation", ({ user_id, lat, long }) => {
-        console.log({ user_id, lat, long });
+        console.log("####################################3");
+        console.log({ user_id, lat, long })
         axios
           .post(`${endpoint}/api/current-location`, { user_id, lat, long })
           .then((res) => {
