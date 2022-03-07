@@ -23,8 +23,8 @@ app.get("/home", (req, res) => {
 });	
 
 const main = async () => {
-  const endpoint = "https://pina-app.com";
-  // const endpoint = "http://127.0.0.1:8000"
+  // const endpoint = "http://pina-pp.com";
+  const endpoint = "http://pinaa.test"
 
   const response = await axios(`${endpoint}/api/chat/users`)
   const users = await response?.data?.data
