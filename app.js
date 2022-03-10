@@ -57,7 +57,7 @@ const main = async () => {
           text: `${user?.username} has joined the chat!`,
         });
 
-        socket.join(user?.room);
+        socket.join(user?.room);   
       });
 
       socket.on(
@@ -65,6 +65,7 @@ const main = async () => {
         async ({ userId, username, type, text, url, lat, long }) => {
           console.log("sending new message...");
           const user = getUser(socket.id);
+          console.log(user)
           if (!user) return { message: "not authroized to enter this room" };
 
           axios
