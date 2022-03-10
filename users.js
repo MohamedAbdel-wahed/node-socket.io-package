@@ -23,7 +23,6 @@ const removeUser = (id) => {
 }
 
 const getUser = (id) => {
-	console.log(id) 
 	return roomUsers.find((user) => user.id==id)
 }
 

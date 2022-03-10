@@ -65,7 +65,6 @@ const main = async () => {
         async ({ userId, username, type, text, url, lat, long }) => {
           console.log("sending new message...");
           const user = getUser(socket.id);
-          console.log(user)
           if (!user) return { message: "not authroized to enter this room" };
 
           axios
@@ -80,6 +79,7 @@ const main = async () => {
               village_id: user.room,
             })
             .then((res) => {
+              console.log(res?.data)
               const data = res?.data?.data || null;
               console.log(data);
               io.to(data?.village_id).emit("chat:message", data);
