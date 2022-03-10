@@ -13,12 +13,11 @@
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.12",
     "pm2": "^5.1.0",
-    "socket.io": "^2.3.0"
+    "socket.io": "^4.4.1"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "node app",
-    "dev": "npx kill-port 5000 && nodemon app"
+    "dev": "nodemon app"
   },
   "repository": {
     "type": "git",

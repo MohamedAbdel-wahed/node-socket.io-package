@@ -23,22 +23,18 @@ app.get("/home", (req, res) => {
 });	
 
 const main = async () => {
-   const endpoint = "http://pina-app.com";
- // const endpoint = "http://pinaa.test"
+  const endpoint = "http://pina-app.com"; // server_endpoint
 
   const response = await axios(`${endpoint}/api/chat/users`)
-  let users = await response?.data?.data
-
-  users= users.filter(user => user.village_id)
-  console.log(users)
+  const users = await response?.data?.data
+  
     io.on("connection", (socket) => {
       console.log(`new user connected!`);
       socket.on("join", ({ userId, room }) => {
-        console.log("joined_data:", {userId, room});
+        console.log("start db");
         const db_user = users.find(
-          (user) => user.id==userId && user.village_id==room
+          (user) => user.id === userId && user.village_id === parseInt(room)
         );
-
         if (!db_user) {
           io.emit("unjoin", { status: 401 });
           return;
@@ -69,7 +65,6 @@ const main = async () => {
         async ({ userId, username, type, text, url, lat, long }) => {
           console.log("sending new message...");
           const user = getUser(socket.id);
-		console.log(user);
           if (!user) return { message: "not authroized to enter this room" };
 
           axios
@@ -107,3 +102,4 @@ const main = async () => {
 };
 
 main();
+
