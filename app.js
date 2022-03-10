@@ -23,13 +23,10 @@ app.get("/home", (req, res) => {
 });	
 
 const main = async () => {
-  // const endpoint = "http://pina-pp.com";
-  const endpoint = "http://pinaa.test"
+  const endpoint = "http://pina-app.com"; // server_endpoint
 
   const response = await axios(`${endpoint}/api/chat/users`)
   const users = await response?.data?.data
-
-  users.filter(user => user.village_id)
   
     io.on("connection", (socket) => {
       console.log(`new user connected!`);
