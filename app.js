@@ -64,6 +64,8 @@ const main = async () => {
         "chat:send",
         async ({ userId, username, type, text, url, lat, long }) => {
           console.log("sending new message...");
+          console.log({ userId, username, type, text, url, lat, long })
+          console.log('###############')
           const user = getUser(socket.id);
           if (!user) return { message: "not authroized to enter this room" };
 
