@@ -23,7 +23,7 @@ app.get("/home", (req, res) => {
 });	
 
 const main = async () => {
-  const endpoint = "http://pina-app.com"; // server_endpoint
+  const endpoint = "http://pina-app.com"; // pina_server_base
 
   const response = await axios(`${endpoint}/api/chat/users`)
   const users = await response?.data?.data
@@ -64,8 +64,6 @@ const main = async () => {
         "chat:send",
         async ({ userId, username, type, text, url, lat, long }) => {
           console.log("sending new message...");
-          console.log({ userId, username, type, text, url, lat, long })
-          console.log('###############')
           const user = getUser(socket.id);
           if (!user) return { message: "not authroized to enter this room" };
 
